@@ -1,0 +1,10 @@
+API_ID = 28733143
+API_HASH = "f7bbd29cf8ba336237046dbecfeab519"
+BOT_TOKEN = "8226757941:AAH97Gfh_bgbhScmumHSO5VYY1Vby7Mg82k"
+
+ASSISTANT_SESSION = "assistant"
+
+SPOTIFY_CLIENT_ID = "your_spotify_id"
+SPOTIFY_CLIENT_SECRET = "your_spotify_secret"
+
+OWNER_ID = 7066124462
