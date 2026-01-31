@@ -1,5 +1,5 @@
 from pyrogram import filters
-from bot import bot
+from musicbot import bot
 from utils.vc import vc
 
 @bot.on_message(filters.command("pause"))
