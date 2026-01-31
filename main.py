@@ -7,49 +7,74 @@ from music_queue import add_song, get_queue
 import yt_dlp
 import os
 
-# --- Telethon Client with StringSession ---
+# ─── TELETHON CLIENT ──────────────────────────────────────────────
 client = TelegramClient(
     StringSession(SESSION),
     API_ID,
     API_HASH
 )
 
-# --- PLAY COMMAND ---
+# ─── YT-DLP OPTIONS (ANTI-BOT SAFE MODE) ─────────────────────────
+YDL_OPTS = {
+    "format": "bestaudio/best",
+    "noplaylist": True,
+    "quiet": True,
+    "default_search": "ytsearch",
+    "geo_bypass": True,
+    "nocheckcertificate": True,
+    "ignoreerrors": True,
+    "outtmpl": "downloads/%(id)s.%(ext)s",
+}
+
+os.makedirs("downloads", exist_ok=True)
+
+# ─── PLAY COMMAND ────────────────────────────────────────────────
 @client.on(events.NewMessage(pattern=r"\.play (.+)"))
 async def play(event):
-    query = event.pattern_match.group(1)
+    query = event.pattern_match.group(1).strip()
 
+    # text → ytsearch
     if not query.startswith("http"):
-        query = f"ytsearch1:{query}"
+        query = f"ytsearch:{query}"
 
-    ydl_opts = {
-        "format": "bestaudio",
-        "outtmpl": "downloads/%(id)s.%(ext)s",
-        "quiet": True
-    }
+    await event.reply("🔍 Searching & downloading...")
 
-    os.makedirs("downloads", exist_ok=True)
+    try:
+        with yt_dlp.YoutubeDL(YDL_OPTS) as ydl:
+            info = ydl.extract_info(query, download=True)
 
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        info = ydl.extract_info(query, download=True)
+            # ytsearch returns entries
+            if "entries" in info:
+                info = info["entries"][0]
 
-        if "entries" in info:
-            info = info["entries"][0]
+            if not info:
+                return await event.reply("❌ No results found.")
 
-        file = ydl.prepare_filename(info)
+            file_path = ydl.prepare_filename(info)
 
-    add_song(event.chat_id, file)
-    await event.reply(f"🎶 Added to queue:\n**{info['title']}**")
-# --- QUEUE COMMAND ---
+    except Exception as e:
+        return await event.reply(f"❌ Download failed:\n`{e}`")
+
+    add_song(event.chat_id, file_path)
+
+    await event.reply(
+        f"🎶 **Added to queue**\n"
+        f"**Title:** {info.get('title')}\n"
+        f"**Duration:** {info.get('duration', 'N/A')} sec"
+    )
+
+# ─── QUEUE COMMAND ───────────────────────────────────────────────
 @client.on(events.NewMessage(pattern=r"\.queue"))
 async def queue_cmd(event):
     q = get_queue(event.chat_id)
+
     if not q:
-        return await event.reply("Queue empty")
+        return await event.reply("🎧 Queue is empty.")
 
-    msg = "\n".join(f"{i+1}. {s}" for i, s in enumerate(q))
-    await event.reply(f"🎧 Queue:\n{msg}")
+    msg = "\n".join(f"{i+1}. {os.path.basename(s)}" for i, s in enumerate(q))
+    await event.reply(f"🎧 **Current Queue:**\n{msg}")
 
-# --- START ---
+# ─── START BOT ───────────────────────────────────────────────────
 client.start()
+print("✅ Telethon Music Bot Started")
 client.run_until_disconnected()
