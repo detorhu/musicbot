@@ -1,10 +1,12 @@
-API_ID = 28733143
-API_HASH = "f7bbd29cf8ba336237046dbecfeab519"
-BOT_TOKEN = "8226757941:AAH97Gfh_bgbhScmumHSO5VYY1Vby7Mg82k"
+import os
 
-ASSISTANT_SESSION = "assistant"
+API_ID = int(os.getenv("API_ID"))
+API_HASH = os.getenv("API_HASH")
+BOT_TOKEN = os.getenv("BOT_TOKEN")
 
-SPOTIFY_CLIENT_ID = "your_spotify_id"
-SPOTIFY_CLIENT_SECRET = "your_spotify_secret"
+ASSISTANT_SESSION = os.getenv("ASSISTANT_SESSION")
 
-OWNER_ID = 7066124462
+SPOTIFY_CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
+SPOTIFY_CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
+
+OWNER_ID = int(os.getenv("OWNER_ID"))
