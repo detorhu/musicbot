@@ -1,6 +1,6 @@
 from telethon import TelegramClient, events
 from config import API_ID, API_HASH, SESSION
-from queue import add_song, get_queue, pop_song
+from music_queue import add_song, get_queue
 import yt_dlp
 import os
 
