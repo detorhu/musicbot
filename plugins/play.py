@@ -1,5 +1,5 @@
 from pyrogram import filters
-from bot import bot
+from musicbot import bot
 from utils.yt import yt_search
 from utils.spotify_api import spotify_track
 from utils.vc import vc
