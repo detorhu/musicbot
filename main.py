@@ -1,11 +1,16 @@
-from telethon import TelegramClient, events
+pfrom telethon import TelegramClient, events
 from config import API_ID, API_HASH, SESSION
 from music_queue import add_song, get_queue
 import yt_dlp
 import os
 
-client = TelegramClient(SESSION, API_ID, API_HASH)
+from telethon.sessions import StringSession
 
+client = TelegramClient(
+    StringSession(SESSION),
+    API_ID,
+    API_HASH
+)
 @client.on(events.NewMessage(pattern=r"\.play (.+)"))
 async def play(event):
     query = event.pattern_match.group(1)
