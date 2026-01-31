@@ -19,6 +19,9 @@ client = TelegramClient(
 async def play(event):
     query = event.pattern_match.group(1)
 
+    if not query.startswith("http"):
+        query = f"ytsearch1:{query}"
+
     ydl_opts = {
         "format": "bestaudio",
         "outtmpl": "downloads/%(id)s.%(ext)s",
@@ -29,11 +32,14 @@ async def play(event):
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(query, download=True)
+
+        if "entries" in info:
+            info = info["entries"][0]
+
         file = ydl.prepare_filename(info)
 
     add_song(event.chat_id, file)
     await event.reply(f"🎶 Added to queue:\n**{info['title']}**")
-
 # --- QUEUE COMMAND ---
 @client.on(events.NewMessage(pattern=r"\.queue"))
 async def queue_cmd(event):
