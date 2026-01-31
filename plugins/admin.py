@@ -1,6 +1,6 @@
 from pyrogram import filters
 from pyrogram.errors import ChatAdminRequired
-from bot import bot
+from musicbot import bot
 from config import OWNER_ID
 from utils.queue import reset_queue
 from utils.vc import vc
