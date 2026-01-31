@@ -3,4 +3,4 @@ tgcrypto
 yt-dlp
 requests
 pymongo
-pytgcalls==2.0.0
+pytgcalls
