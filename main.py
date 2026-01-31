@@ -1,16 +1,20 @@
-pfrom telethon import TelegramClient, events
+from telethon import TelegramClient, events
+from telethon.sessions import StringSession
+
 from config import API_ID, API_HASH, SESSION
 from music_queue import add_song, get_queue
+
 import yt_dlp
 import os
 
-from telethon.sessions import StringSession
-
+# --- Telethon Client with StringSession ---
 client = TelegramClient(
     StringSession(SESSION),
     API_ID,
     API_HASH
 )
+
+# --- PLAY COMMAND ---
 @client.on(events.NewMessage(pattern=r"\.play (.+)"))
 async def play(event):
     query = event.pattern_match.group(1)
@@ -30,6 +34,7 @@ async def play(event):
     add_song(event.chat_id, file)
     await event.reply(f"🎶 Added to queue:\n**{info['title']}**")
 
+# --- QUEUE COMMAND ---
 @client.on(events.NewMessage(pattern=r"\.queue"))
 async def queue_cmd(event):
     q = get_queue(event.chat_id)
@@ -39,5 +44,6 @@ async def queue_cmd(event):
     msg = "\n".join(f"{i+1}. {s}" for i, s in enumerate(q))
     await event.reply(f"🎧 Queue:\n{msg}")
 
+# --- START ---
 client.start()
 client.run_until_disconnected()
