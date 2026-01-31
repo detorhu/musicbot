@@ -3,4 +3,3 @@ tgcrypto
 yt-dlp
 requests
 pymongo
-pytgcalls
