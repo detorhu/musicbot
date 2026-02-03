@@ -1,7 +1,7 @@
 pyrogram==2.0.106
 tgcrypto==1.2.5
 
-# STABLE PyTgCalls (NO tgcalls error)
+# LAST STABLE THAT WORKS ON PY3.10
 pytgcalls==2.1.0
 
 yt-dlp
