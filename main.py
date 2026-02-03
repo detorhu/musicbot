@@ -1,5 +1,6 @@
 import asyncio
 from pyrogram import idle
+from bot.handlers import start, play, controls, admin
 
 from bot.client import bot, assistant
 from bot.player.call import start_call
