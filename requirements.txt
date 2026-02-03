@@ -1,8 +1,7 @@
 pyrogram==2.0.106
 tgcrypto==1.2.5
 
-# PyTgCalls (STABLE & AVAILABLE)
-pytgcalls==2.1.0
+pytgcalls==3.0.0.dev24
 
 yt-dlp
 ffmpeg-python
