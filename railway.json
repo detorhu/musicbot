@@ -4,6 +4,6 @@
   },
   "nixpacks": {
     "pythonVersion": "3.10",
-    "aptPackages": ["ffmpeg", "gcc"]
+    "aptPackages": ["ffmpeg", "gcc", "g++", "make"]
   }
 }
