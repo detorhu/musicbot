@@ -1,11 +1,33 @@
 import yt_dlp
 
-def get_audio(query):
-    ydl_opts = {
-        "format": "bestaudio",
-        "quiet": True,
-        "noplaylist": True,
-    }
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+YDL_OPTIONS = {
+    "format": "bestaudio/best",
+    "quiet": True,
+    "noplaylist": True,
+    "geo_bypass": True,
+    "default_search": "ytsearch",
+    "nocheckcertificate": True,
+}
+
+def get_audio(query: str):
+    """
+    Returns:
+        stream_url (str): Direct audio stream URL
+        title (str): Video title
+        duration (int): Duration in seconds
+    """
+    with yt_dlp.YoutubeDL(YDL_OPTIONS) as ydl:
         info = ydl.extract_info(query, download=False)
-        return info["url"], info["title"]
+
+        # If search result
+        if "entries" in info:
+            info = info["entries"][0]
+
+        audio_url = info.get("url")
+        title = info.get("title")
+        duration = info.get("duration", 0)
+
+        if not audio_url:
+            raise Exception("Failed to fetch audio stream")
+
+        return audio_url, title, duration
