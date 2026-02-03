@@ -1,7 +1,11 @@
 pyrogram==2.0.106
 tgcrypto==1.2.5
 
+# PyTgCalls
 pytgcalls==3.0.0.dev24
+
+# tgcalls (NOT on PyPI)
+git+https://github.com/pytgcalls/tgcalls.git
 
 yt-dlp
 ffmpeg-python
